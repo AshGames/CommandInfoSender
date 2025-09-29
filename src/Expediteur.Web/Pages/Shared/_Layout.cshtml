@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Expéditeur d'accusé de commande</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <header class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-emerald-500 text-white text-xl font-semibold shadow-lg shadow-emerald-500/30">
+                    ÉC
+                </span>
+                <div>
+                    <h1 class="text-2xl font-semibold text-slate-900">Expéditeur d'accusé de commande</h1>
+                    <p class="text-sm text-slate-500">Surveillez, planifiez et déclenchez vos accusés en toute simplicité</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-600">
+                <a class="hover:text-emerald-600 transition" asp-page="/Index">Tableau de bord</a>
+                <a class="hover:text-emerald-600 transition" asp-page="/Historique">Historique</a>
+                <a class="hover:text-emerald-600 transition" asp-page="/Configuration">Configuration</a>
+            </nav>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @RenderBody()
+    </main>
+    <footer class="py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
+            &copy; @DateTime.Now.Year Expéditeur d'accusé de commande · Toutes les opérations sont enregistrées.
+        </div>
+    </footer>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

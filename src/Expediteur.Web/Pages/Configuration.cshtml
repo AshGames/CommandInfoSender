@@ -1,0 +1,61 @@
+@page
+@model ConfigurationModel
+@{
+    ViewData["Title"] = "Configuration";
+}
+
+<section class="space-y-8">
+    <header class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+            <h1 class="text-3xl font-semibold text-slate-900">Configuration de la planification</h1>
+            <p class="text-sm text-slate-500">Définissez l'intervalle des envois automatiques et l'état de la planification.</p>
+        </div>
+        <a asp-page="/Index" class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600">
+            ⟵ Retour au tableau de bord
+        </a>
+    </header>
+
+    @if (!string.IsNullOrEmpty(Model.Notification))
+    {
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-700 shadow-sm">
+            @Model.Notification
+        </div>
+    }
+
+    <div class="grid gap-6 md:grid-cols-2">
+        <div class="card-glass p-6">
+            <h2 class="text-lg font-semibold text-slate-900">Planification actuelle</h2>
+            <p class="mt-2 text-sm text-slate-500">
+                Prochaine exécution : @Model.ConfigurationActuelle?.ProchaineExecution.ToLocalTime().ToString("dd MMMM yyyy à HH:mm")
+            </p>
+            <p class="mt-1 text-sm text-slate-500">Intervalle : @Model.ConfigurationActuelle?.IntervalleHeures heure(s)</p>
+            <p class="mt-1 text-sm text-slate-500">
+                Statut :
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium @(Model.ConfigurationActuelle?.EstActif == true ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700")">
+                    @(Model.ConfigurationActuelle?.EstActif == true ? "Active" : "Inactive")
+                </span>
+            </p>
+        </div>
+
+        <div class="card-glass p-6">
+            <form method="post" class="space-y-5">
+                <div>
+                    <label asp-for="Input.IntervalleHeures" class="block text-sm font-medium text-slate-600"></label>
+                    <input asp-for="Input.IntervalleHeures" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 shadow-sm focus:border-emerald-400 focus:outline-none focus:ring focus:ring-emerald-100" type="number" min="1" max="168" />
+                    <span asp-validation-for="Input.IntervalleHeures" class="text-sm text-rose-600"></span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <input asp-for="Input.EstActif" class="h-5 w-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" type="checkbox" />
+                    <label asp-for="Input.EstActif" class="text-sm text-slate-600"></label>
+                </div>
+                <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition hover:bg-emerald-700">
+                    Enregistrer
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
