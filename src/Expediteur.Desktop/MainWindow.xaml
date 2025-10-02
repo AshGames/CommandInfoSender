@@ -1,0 +1,98 @@
+<Window x:Class="Expediteur.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+        Title="Expéditeur d'accusés de commande"
+        Width="960"
+        Height="600"
+        MinWidth="860"
+        MinHeight="520"
+        Background="#f8fafc">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,16" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#1f2933" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+    </Window.Resources>
+    <DockPanel Margin="24">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,16">
+            <TextBlock Text="Gestion des accusés" FontSize="24" FontWeight="Bold" Margin="0,0,16,0" />
+            <Border Background="#0f766e" CornerRadius="4" Padding="8,4" VerticalAlignment="Center">
+                <TextBlock Text="Desktop" Foreground="White" FontWeight="Bold" />
+            </Border>
+        </StackPanel>
+        <Grid DataContext="{Binding}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="220" />
+                </Grid.ColumnDefinitions>
+                <GroupBox Header="Planification" Grid.Column="0" Margin="0,0,24,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Intervalle (heures) :" VerticalAlignment="Center" Width="150" />
+                            <TextBox Width="80"
+                                     Text="{Binding IntervalleHeures, UpdateSourceTrigger=PropertyChanged}"
+                                     HorizontalContentAlignment="Right" />
+                            <CheckBox Content="Planification active"
+                                      Margin="24,0,0,0"
+                                      IsChecked="{Binding EstActif}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Prochaine exécution :" Width="150" />
+                            <TextBlock Text="{Binding ProchaineExecutionLocale}" FontWeight="Normal" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Content="Mettre à jour"
+                                    Command="{Binding SaveScheduleCommand}" />
+                            <Button Content="Rafraîchir"
+                                    Command="{Binding RefreshCommand}" />
+                            <Button Content="Déclencher maintenant"
+                                    Command="{Binding TriggerCommand}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding StatusMessage}" Foreground="#0f172a" TextWrapping="Wrap" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="État" Grid.Column="1">
+                    <StackPanel>
+                        <TextBlock Text="{Binding EtatTexte}" FontSize="16" FontWeight="Bold" />
+                        <ProgressBar Height="12" Margin="0,8,0,0" IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+            <GroupBox Header="Historique des exécutions" Grid.Row="1">
+                <DataGrid ItemsSource="{Binding Historique}"
+                          AutoGenerateColumns="False"
+                          HeadersVisibility="Column"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          AlternationCount="2">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Date (locale)" Binding="{Binding DateExecutionLocale}" Width="200" />
+                        <DataGridTextColumn Header="Commande" Binding="{Binding NumeroCommande}" Width="150" />
+                        <DataGridTextColumn Header="Destinataire" Binding="{Binding Destinataire}" Width="200" />
+                        <DataGridTextColumn Header="Résultat" Binding="{Binding Resultat}" Width="120" />
+                        <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </Grid>
+    </DockPanel>
+</Window>

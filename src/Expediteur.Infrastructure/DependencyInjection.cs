@@ -21,7 +21,7 @@ public static class DependencyInjection
         services.AddTransient<IScheduleConfigurationRepository, SqlScheduleConfigurationRepository>();
         services.AddSingleton<IClock, UtcClock>();
 
-        services.AddSingleton<IPdfRenderer, QuestPdfRenderer>();
+    services.AddSingleton<IPdfRenderer, MigraDocPdfRenderer>();
         services.AddTransient<IEmailSender, SmtpEmailSender>();
         services.AddTransient<ICommandAcknowledger, CommandAcknowledger>();
 

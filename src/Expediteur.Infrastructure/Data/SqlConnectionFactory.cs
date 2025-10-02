@@ -15,8 +15,14 @@ public sealed class SqlConnectionFactory : ISqlConnectionFactory
 
     public SqlConnectionFactory(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("Commandes")
-            ?? throw new InvalidOperationException("La chaîne de connexion 'Commandes' est manquante.");
+        var connectionString = configuration.GetConnectionString("Commandes");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException("La chaîne de connexion 'Commandes' est manquante. Veuillez compléter 'appsettings.json' ou définir la variable d'environnement CONNECTIONSTRINGS__COMMANDES.");
+        }
+
+        _connectionString = connectionString;
     }
 
     public async Task<IDbConnection> CreateOpenConnectionAsync(CancellationToken cancellationToken = default)
